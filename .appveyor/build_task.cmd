@@ -31,7 +31,7 @@ setlocal enableextensions enabledelayedexpansion
 
 	if %errorlevel% neq 0 exit /b 3
 
-	cmd /c configure.bat --disable-all --with-mp=auto --enable-cli --%ZTS_STATE%-zts --with-tideways_xhprof=shared --enable-object-out-dir=%PHP_BUILD_OBJ_DIR% --with-config-file-scan-dir=%APPVEYOR_BUILD_FOLDER%\build\modules.d --with-prefix=%APPVEYOR_BUILD_FOLDER%\build --with-php-build=%DEPS_DIR%
+	cmd /c configure.bat --disable-all --with-mp=auto --enable-cli --%ZTS_STATE%-zts --with-tideways=shared --enable-object-out-dir=%PHP_BUILD_OBJ_DIR% --with-config-file-scan-dir=%APPVEYOR_BUILD_FOLDER%\build\modules.d --with-prefix=%APPVEYOR_BUILD_FOLDER%\build --with-php-build=%DEPS_DIR%
 
 	if %errorlevel% neq 0 exit /b 3
 
@@ -46,7 +46,7 @@ setlocal enableextensions enabledelayedexpansion
 	set TEST_PHP_EXECUTABLE=%APPVEYOR_BUILD_FOLDER%\build\php.exe
 	set TEST_PHP_JUNIT=c:\tests_tmp\tests-junit.xml
 	if "%OPCACHE%" equ "1" set TEST_PHP_ARGS=!TEST_PHP_ARGS! -d extension=%APPVEYOR_BUILD_FOLDER%\build\ext\php_opcache.so -d opcache.enable=1 -d opcache.enable_cli=1
-	set TEST_PHP_ARGS=-n -d -foo=1 -d extension=%APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways_xhprof.dll
+	set TEST_PHP_ARGS=-n -d -foo=1 -d extension=%APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways.dll
 	set SKIP_DBGP_TESTS=1
 	set SKIP_IPV6_TESTS=1
 	set REPORT_EXIT_STATUS=1
@@ -61,13 +61,13 @@ setlocal enableextensions enabledelayedexpansion
 
 	cd /d %APPVEYOR_BUILD_FOLDER%
 
-	if not exist "%APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways_xhprof.dll" exit /b 3
+	if not exist "%APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways.dll" exit /b 3
 
-	xcopy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\php_tideways_xhprof-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\ /y /f
-    xcopy %APPVEYOR_BUILD_FOLDER%\NOTICE %APPVEYOR_BUILD_FOLDER%\php_tideways_xhprof-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\ /y /f
-	echo F|xcopy %APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways_xhprof.dll %APPVEYOR_BUILD_FOLDER%\php_tideways_xhprof-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\php_tideways_xhprof-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.dll /y /f
-	7z a php_tideways_xhprof-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip %APPVEYOR_BUILD_FOLDER%\php_tideways_xhprof-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\*
-	appveyor PushArtifact php_tideways_xhprof-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip -FileName php_tideways_xhprof-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip
+	xcopy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\php_tideways-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\ /y /f
+    xcopy %APPVEYOR_BUILD_FOLDER%\NOTICE %APPVEYOR_BUILD_FOLDER%\php_tideways-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\ /y /f
+	echo F|xcopy %APPVEYOR_BUILD_FOLDER%\build\ext\php_tideways.dll %APPVEYOR_BUILD_FOLDER%\php_tideways-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\php_tideways-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.dll /y /f
+	7z a php_tideways-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip %APPVEYOR_BUILD_FOLDER%\php_tideways-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%\*
+	appveyor PushArtifact php_tideways-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip -FileName php_tideways-%APPVEYOR_REPO_TAG_NAME%-%PHP_REL%-%PHP_BUILD_CRT%!ZTS_IN_FILENAME!!ARCH_IN_FILENAME!.zip
 
-	rem move build\ext\php_tideways_xhprof.dll artifacts\php_tideways_xhprof-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%.dll
+	rem move build\ext\php_tideways.dll artifacts\php_tideways-%PHP_REL%-!ZTS_SHORT!-%PHP_BUILD_CRT%-%PHP_SDK_ARCH%.dll
 endlocal

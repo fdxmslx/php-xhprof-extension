@@ -31,7 +31,7 @@ setlocal enableextensions enabledelayedexpansion
 		git clone -q --depth=1 --branch=PHP-%PHP_REL% https://github.com/php/php-src C:\projects\php-src
 	)
 
-	xcopy %APPVEYOR_BUILD_FOLDER% C:\projects\php-src\ext\tideways_xhprof\ /s /e /y /q
+	xcopy %APPVEYOR_BUILD_FOLDER% C:\projects\php-src\ext\tideways\ /s /e /y /q
 
 	xcopy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\artifacts\ /y /q
     xcopy %APPVEYOR_BUILD_FOLDER%\NOTICE %APPVEYOR_BUILD_FOLDER%\artifacts\ /y /q
@@ -47,10 +47,10 @@ setlocal enableextensions enabledelayedexpansion
 
 	if "%APPVEYOR_REPO_TAG_NAME%"=="" (
 		set APPVEYOR_REPO_TAG_NAME=%APPVEYOR_REPO_BRANCH%-%APPVEYOR_REPO_COMMIT:~0,8%
-		for /f "delims=" %%l in (php_tideways_xhprof.h) do (
+		for /f "delims=" %%l in (php_tideways.h) do (
 			if not "%%l"=="" (
 				set line=%%l
-				if "!line:~8,27!"=="PHP_TIDEWAYS_XHPROF_VERSION" (
+				if "!line:~8,27!"=="PHP_tideways_VERSION" (
 					set APPVEYOR_REPO_TAG_NAME=!line:~37,-1!-%APPVEYOR_REPO_BRANCH%-%APPVEYOR_REPO_COMMIT:~0,8%
 				)
 			)
